@@ -141,10 +141,10 @@ namespace VirtualDeanUnitTests.Controllers
             var mockedCommunionRepository = new Mock<ITrayCommunionHour>();
             mockedCommunionRepository
                 .Setup(repo => repo.GetCommunionHours(1))
-                .Returns(() => Task.FromResult(mockedCommunion.AsEnumerable()));
+                .Returns(() => Task.FromResult(mockedCommunion.Where(i => i.WeekOfOffices == 1)));
             var officeController = new Offices(null, null, mockedCommunionRepository.Object, null, null);
             var result = await officeController.GetCommunionHour(1);
-            Assert.That(result.Count, Is.EqualTo(3));
+            Assert.That(result.Count, Is.EqualTo(2));
         }
     }
 }

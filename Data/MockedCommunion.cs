@@ -20,7 +20,7 @@ namespace VirtualDeanUnitTests.Data
                 {
                     Id = i,
                     BrotherId = i,
-                    WeekOfOffices = 1,
+                    WeekOfOffices = i % 3 == 0 ? 2 : 1,
                     CommunionHour = constCommunion.ElementAt(i)
                 });
             }
