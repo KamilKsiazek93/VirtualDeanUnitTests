@@ -81,5 +81,22 @@ namespace VirtualDeanUnitTests.Controllers
                 Assert.That(result.ElementAt(2).TrayHour, Is.EqualTo("12.00"));
             });
         }
+
+        [Test]
+        public async Task GetTrays_WhenProvideWeekNumber_ReturnsTraysWithProvidedWeekNumber()
+        {
+            var mockedTrays = new MockedTray().GetTrays();
+            var mockedTrayRepository = new Mock<ITrayCommunionHour>();
+            mockedTrayRepository
+                .Setup(repo => repo.GetTrayHours(1))
+                .Returns(() => Task.FromResult(mockedTrays));
+
+            var officeController = new Offices(null, null, mockedTrayRepository.Object, null, null);
+            var result = await officeController.GetTrayHour(1);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Count, Is.EqualTo(3));
+            });
+        }
     }
 }
