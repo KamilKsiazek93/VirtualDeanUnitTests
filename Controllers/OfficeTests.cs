@@ -62,5 +62,24 @@ namespace VirtualDeanUnitTests.Controllers
                 Assert.That(result.IsDiacon, Is.EqualTo(false));
             });
         }
+
+        [Test]
+        public async Task GetTrays_WhenCall_ReturnListOfTrays()
+        {
+            var mockedTrays = new MockedTray().GetTrays();
+            var mockedTrayRepository = new Mock<ITrayCommunionHour>();
+            mockedTrayRepository
+                .Setup(repo => repo.GetTrayHours())
+                .Returns(() => Task.FromResult(mockedTrays));
+
+            var officeController = new Offices(null, null, mockedTrayRepository.Object, null, null);
+            var result = await officeController.GetTrayHour();
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.ElementAt(0).TrayHour, Is.EqualTo("9.00"));
+                Assert.That(result.ElementAt(1).TrayHour, Is.EqualTo("10.30"));
+                Assert.That(result.ElementAt(2).TrayHour, Is.EqualTo("12.00"));
+            });
+        }
     }
 }
