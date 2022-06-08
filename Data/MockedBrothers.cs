@@ -20,10 +20,10 @@ namespace VirtualDeanUnitTests.Data
                     Name = "Bro",
                     Surname = "OP",
                     precedency = DateTime.Today,
-                    isSinging = false,
-                    isLector = true,
-                    isAcolit = true,
-                    isDiacon = false
+                    IsSinging = false,
+                    IsLector = true,
+                    IsAcolit = true,
+                    IsDiacon = false
                 }); ;
             }
             return mockBrothers;

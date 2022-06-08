@@ -32,10 +32,32 @@ namespace VirtualDeanUnitTests.Controllers
                 Assert.That(result.ElementAt(1).Id, Is.EqualTo(2));
                 Assert.That(result.ElementAt(1).Name, Is.EqualTo("Bro"));
                 Assert.That(result.ElementAt(1).Surname, Is.EqualTo("OP"));
-                Assert.That(result.ElementAt(1).isSinging, Is.EqualTo(false));
-                Assert.That(result.ElementAt(1).isLector, Is.EqualTo(true));
-                Assert.That(result.ElementAt(1).isAcolit, Is.EqualTo(true));
-                Assert.That(result.ElementAt(1).isDiacon, Is.EqualTo(false));
+                Assert.That(result.ElementAt(1).IsSinging, Is.EqualTo(false));
+                Assert.That(result.ElementAt(1).IsLector, Is.EqualTo(true));
+                Assert.That(result.ElementAt(1).IsAcolit, Is.EqualTo(true));
+                Assert.That(result.ElementAt(1).IsDiacon, Is.EqualTo(false));
+            });
+        }
+
+        [Test]
+        public async Task GetBrothers_WhenProvideId_ReturnsBrotherWithProvidedId()
+        {
+            var mockedBrothers = new MockedBrothers().getMockedBrothers();
+            var mockedRepositoryBrother = new Mock<IBrothers>();
+            mockedRepositoryBrother
+                .Setup(repo => repo.GetBrother(2))
+                .Returns(() => Task.FromResult(mockedBrothers.ElementAt(1)));
+            var officeController = new VirtualDean.Controllers.Offices(mockedRepositoryBrother.Object, null, null, null);
+            var result = await officeController.GetBrothers(2);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Id, Is.EqualTo(2));
+                Assert.That(result.Name, Is.EqualTo("Bro"));
+                Assert.That(result.Surname, Is.EqualTo("OP"));
+                Assert.That(result.IsSinging, Is.EqualTo(false));
+                Assert.That(result.IsLector, Is.EqualTo(true));
+                Assert.That(result.IsAcolit, Is.EqualTo(true));
+                Assert.That(result.IsDiacon, Is.EqualTo(false));
             });
         }
     }
