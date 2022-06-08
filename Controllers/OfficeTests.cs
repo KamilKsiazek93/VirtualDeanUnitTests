@@ -133,5 +133,18 @@ namespace VirtualDeanUnitTests.Controllers
                 Assert.That(result.ElementAt(2).CommunionHour, Is.EqualTo("13.30"));
             });
         }
+
+        [Test]
+        public async Task GetCommunion_WhenProvideWeekNumber_ShouldReturnListOfTray()
+        {
+            var mockedCommunion = new MockedCommunion().GetCommunions();
+            var mockedCommunionRepository = new Mock<ITrayCommunionHour>();
+            mockedCommunionRepository
+                .Setup(repo => repo.GetCommunionHours(2))
+                .Returns(() => Task.FromResult(mockedCommunion.AsEnumerable()));
+            var officeController = new Offices(null, null, mockedCommunionRepository.Object, null, null);
+            var result = await officeController.GetCommunionHour(1);
+            Assert.That(result.Count, Is.EqualTo(3));
+        }
     }
 }
