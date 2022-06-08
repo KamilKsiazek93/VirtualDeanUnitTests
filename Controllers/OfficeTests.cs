@@ -32,10 +32,10 @@ namespace VirtualDeanUnitTests.Controllers
                 Assert.That(result.ElementAt(1).Id, Is.EqualTo(2));
                 Assert.That(result.ElementAt(1).Name, Is.EqualTo("Bro"));
                 Assert.That(result.ElementAt(1).Surname, Is.EqualTo("OP"));
-                Assert.That(result.ElementAt(1).isSinging, Is.EqualTo(false));
-                Assert.That(result.ElementAt(1).isLector, Is.EqualTo(true));
-                Assert.That(result.ElementAt(1).isAcolit, Is.EqualTo(true));
-                Assert.That(result.ElementAt(1).isDiacon, Is.EqualTo(false));
+                Assert.That(result.ElementAt(1).IsSinging, Is.EqualTo(false));
+                Assert.That(result.ElementAt(1).IsLector, Is.EqualTo(true));
+                Assert.That(result.ElementAt(1).IsAcolit, Is.EqualTo(true));
+                Assert.That(result.ElementAt(1).IsDiacon, Is.EqualTo(false));
             });
         }
 
@@ -54,10 +54,10 @@ namespace VirtualDeanUnitTests.Controllers
                 Assert.That(result.Id, Is.EqualTo(2));
                 Assert.That(result.Name, Is.EqualTo("Bro"));
                 Assert.That(result.Surname, Is.EqualTo("OP"));
-                Assert.That(result.isSinging, Is.EqualTo(false));
-                Assert.That(result.isLector, Is.EqualTo(true));
-                Assert.That(result.isAcolit, Is.EqualTo(true));
-                Assert.That(result.isDiacon, Is.EqualTo(false));
+                Assert.That(result.IsSinging, Is.EqualTo(false));
+                Assert.That(result.IsLector, Is.EqualTo(true));
+                Assert.That(result.IsAcolit, Is.EqualTo(true));
+                Assert.That(result.IsDiacon, Is.EqualTo(false));
             });
         }
     }
