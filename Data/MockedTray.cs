@@ -26,5 +26,22 @@ namespace VirtualDeanUnitTests.Data
             }
             return trays;
         }
+
+        public IEnumerable<TrayOfficeAdded> GetFakeTrays()
+        {
+            var trays = new List<TrayOfficeAdded>();
+            var constTrays = new Hours().TrayHours;
+            for (int i = 1; i <= 3; i++)
+            {
+                trays.Add(new TrayOfficeAdded
+                {
+                    Id = i,
+                    BrotherId = i,
+                    WeekOfOffices = 1,
+                    TrayHour = "2.53"
+                });
+            }
+            return trays;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -97,6 +98,21 @@ namespace VirtualDeanUnitTests.Controllers
             {
                 Assert.That(result.Count, Is.EqualTo(3));
             });
+        }
+
+        [Test]
+        public async Task AddTrays_WhenCall_ShouldReturnRightActionResult()
+        {
+            var mockedTrays = new MockedTray().GetTrays();
+            var mockedTrayRepository = new Mock<ITrayCommunionHour>();
+            mockedTrayRepository
+                .Setup(repo => repo.AddTrayHour(mockedTrays))
+                .Returns(Task.CompletedTask);
+
+            var officeController = new Offices(null, null, mockedTrayRepository.Object, null, null);
+            var result = await officeController.AddTrayOffice(mockedTrays);
+            var expectedResult = result as OkObjectResult;
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
     }
 }
