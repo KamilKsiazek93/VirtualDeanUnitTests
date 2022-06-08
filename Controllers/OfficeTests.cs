@@ -50,7 +50,7 @@ namespace VirtualDeanUnitTests.Controllers
             mockedRepositoryBrother
                 .Setup(repo => repo.GetBrother(2))
                 .Returns(() => Task.FromResult(mockedBrothers.ElementAt(1)));
-            var officeController = new VirtualDean.Controllers.Offices(mockedRepositoryBrother.Object, null, null, null, null);
+            var officeController = new Offices(mockedRepositoryBrother.Object, null, null, null, null);
             var result = await officeController.GetBrothers(2);
             Assert.Multiple(() =>
             {
@@ -90,7 +90,7 @@ namespace VirtualDeanUnitTests.Controllers
             var mockedTrayRepository = new Mock<ITrayCommunionHour>();
             mockedTrayRepository
                 .Setup(repo => repo.GetTrayHours(1))
-                .Returns(() => Task.FromResult(mockedTrays));
+                .Returns(() => Task.FromResult(mockedTrays.Where(item => item.WeekOfOffices == 1)));
 
             var officeController = new Offices(null, null, mockedTrayRepository.Object, null, null);
             var result = await officeController.GetTrayHour(1);
@@ -111,8 +111,7 @@ namespace VirtualDeanUnitTests.Controllers
 
             var officeController = new Offices(null, null, mockedTrayRepository.Object, null, null);
             var result = await officeController.AddTrayOffice(mockedTrays);
-            var expectedResult = result as OkObjectResult;
-            Assert.That(result, Is.EqualTo(expectedResult));
+            Assert.IsInstanceOf<OkObjectResult>(result);
         }
 
         [Test]
