@@ -146,5 +146,18 @@ namespace VirtualDeanUnitTests.Controllers
             var result = await officeController.GetCommunionHour(1);
             Assert.That(result.Count, Is.EqualTo(2));
         }
+
+        [Test]
+        public async Task AddCommunion_WhenCall_ShouldReturnRightActionResult()
+        {
+            var mockedCommunion = new MockedCommunion().GetCommunions();
+            var mockedCommunionRepository = new Mock<ITrayCommunionHour>();
+            mockedCommunionRepository
+                .Setup(repo => repo.AddCommunionHour(mockedCommunion))
+                .Returns(Task.CompletedTask);
+            var officeController = new Offices(null, null, mockedCommunionRepository.Object, null, null);
+            var result = await officeController.AddCommunionOffice(mockedCommunion);
+            Assert.IsInstanceOf<OkObjectResult>(result);
+        }
     }
 }
