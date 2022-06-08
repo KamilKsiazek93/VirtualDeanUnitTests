@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualDean.Models;
+using VirtualDean.Enties;
 
 namespace VirtualDeanUnitTests.Data
 {
@@ -19,11 +20,12 @@ namespace VirtualDeanUnitTests.Data
                     Id = i,
                     Name = "Bro",
                     Surname = "OP",
-                    precedency = DateTime.Today,
+                    Precedency = DateTime.Today,
                     IsSinging = false,
                     IsLector = true,
                     IsAcolit = true,
-                    IsDiacon = false
+                    IsDiacon = false,
+                    StatusBrother = BrotherStatus.BRAT
                 }); ;
             }
             return mockBrothers;

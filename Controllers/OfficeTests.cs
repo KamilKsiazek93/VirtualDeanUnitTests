@@ -8,6 +8,7 @@ using NUnit.Framework;
 using VirtualDean.Controllers;
 using VirtualDean.Data;
 using VirtualDean.Models;
+using VirtualDean.Enties;
 using VirtualDeanUnitTests.Data;
 
 namespace VirtualDeanUnitTests.Controllers
@@ -24,7 +25,7 @@ namespace VirtualDeanUnitTests.Controllers
                 .Setup(repo => repo.GetBrothers())
                 .Returns(() => Task.FromResult(mockedBrothers.AsEnumerable()));
 
-            var officeController = new VirtualDean.Controllers.Offices(mockedRepositoryBrother.Object, null, null, null);
+            var officeController = new VirtualDean.Controllers.Offices(mockedRepositoryBrother.Object, null, null, null, null);
             var result = await officeController.GetBrothers();
             Assert.Multiple(() =>
             {
@@ -36,6 +37,7 @@ namespace VirtualDeanUnitTests.Controllers
                 Assert.That(result.ElementAt(1).IsLector, Is.EqualTo(true));
                 Assert.That(result.ElementAt(1).IsAcolit, Is.EqualTo(true));
                 Assert.That(result.ElementAt(1).IsDiacon, Is.EqualTo(false));
+                Assert.That(result.ElementAt(1).StatusBrother, Is.EqualTo(BrotherStatus.BRAT));
             });
         }
 
@@ -47,7 +49,7 @@ namespace VirtualDeanUnitTests.Controllers
             mockedRepositoryBrother
                 .Setup(repo => repo.GetBrother(2))
                 .Returns(() => Task.FromResult(mockedBrothers.ElementAt(1)));
-            var officeController = new VirtualDean.Controllers.Offices(mockedRepositoryBrother.Object, null, null, null);
+            var officeController = new VirtualDean.Controllers.Offices(mockedRepositoryBrother.Object, null, null, null, null);
             var result = await officeController.GetBrothers(2);
             Assert.Multiple(() =>
             {
