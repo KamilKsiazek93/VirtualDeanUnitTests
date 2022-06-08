@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace VirtualDeanUnitTests.Controllers
         [Test]
         public async Task GetBrothers_WhenCall_ReturnsAllBrothers()
         {
-            var mockedBrothers = new MockedBrothers().getMockedBrothers();
+            var mockedBrothers = new MockedBrothers().GetMockedBrothers();
 
             var mockedRepositoryBrother = new Mock<IBrothers>();
             mockedRepositoryBrother
@@ -44,7 +45,7 @@ namespace VirtualDeanUnitTests.Controllers
         [Test]
         public async Task GetBrothers_WhenProvideId_ReturnsBrotherWithProvidedId()
         {
-            var mockedBrothers = new MockedBrothers().getMockedBrothers();
+            var mockedBrothers = new MockedBrothers().GetMockedBrothers();
             var mockedRepositoryBrother = new Mock<IBrothers>();
             mockedRepositoryBrother
                 .Setup(repo => repo.GetBrother(2))
@@ -61,6 +62,57 @@ namespace VirtualDeanUnitTests.Controllers
                 Assert.That(result.IsAcolit, Is.EqualTo(true));
                 Assert.That(result.IsDiacon, Is.EqualTo(false));
             });
+        }
+
+        [Test]
+        public async Task GetTrays_WhenCall_ReturnListOfTrays()
+        {
+            var mockedTrays = new MockedTray().GetTrays();
+            var mockedTrayRepository = new Mock<ITrayCommunionHour>();
+            mockedTrayRepository
+                .Setup(repo => repo.GetTrayHours())
+                .Returns(() => Task.FromResult(mockedTrays));
+
+            var officeController = new Offices(null, null, mockedTrayRepository.Object, null, null);
+            var result = await officeController.GetTrayHour();
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.ElementAt(0).TrayHour, Is.EqualTo("9.00"));
+                Assert.That(result.ElementAt(1).TrayHour, Is.EqualTo("10.30"));
+                Assert.That(result.ElementAt(2).TrayHour, Is.EqualTo("12.00"));
+            });
+        }
+
+        [Test]
+        public async Task GetTrays_WhenProvideWeekNumber_ReturnsTraysWithProvidedWeekNumber()
+        {
+            var mockedTrays = new MockedTray().GetTrays();
+            var mockedTrayRepository = new Mock<ITrayCommunionHour>();
+            mockedTrayRepository
+                .Setup(repo => repo.GetTrayHours(1))
+                .Returns(() => Task.FromResult(mockedTrays));
+
+            var officeController = new Offices(null, null, mockedTrayRepository.Object, null, null);
+            var result = await officeController.GetTrayHour(1);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Count, Is.EqualTo(3));
+            });
+        }
+
+        [Test]
+        public async Task AddTrays_WhenCall_ShouldReturnRightActionResult()
+        {
+            var mockedTrays = new MockedTray().GetTrays();
+            var mockedTrayRepository = new Mock<ITrayCommunionHour>();
+            mockedTrayRepository
+                .Setup(repo => repo.AddTrayHour(mockedTrays))
+                .Returns(Task.CompletedTask);
+
+            var officeController = new Offices(null, null, mockedTrayRepository.Object, null, null);
+            var result = await officeController.AddTrayOffice(mockedTrays);
+            var expectedResult = result as OkObjectResult;
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
     }
 }

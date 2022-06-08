@@ -10,7 +10,7 @@ namespace VirtualDeanUnitTests.Data
 {
     class MockedBrothers
     {
-        public IEnumerable<VirtualDean.Models.Brother> getMockedBrothers()
+        public IEnumerable<Brother> GetMockedBrothers()
         {
             var mockBrothers = new List<VirtualDean.Models.Brother>();
             for (int i = 1; i <= 3; i++)
