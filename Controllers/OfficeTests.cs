@@ -18,7 +18,7 @@ namespace VirtualDeanUnitTests.Controllers
         [Test]
         public async Task GetBrothers_WhenCall_ReturnsAllBrothers()
         {
-            var mockedBrothers = new MockedBrothers().getMockedBrothers();
+            var mockedBrothers = new MockedBrothers().GetMockedBrothers();
 
             var mockedRepositoryBrother = new Mock<IBrothers>();
             mockedRepositoryBrother
@@ -44,7 +44,7 @@ namespace VirtualDeanUnitTests.Controllers
         [Test]
         public async Task GetBrothers_WhenProvideId_ReturnsBrotherWithProvidedId()
         {
-            var mockedBrothers = new MockedBrothers().getMockedBrothers();
+            var mockedBrothers = new MockedBrothers().GetMockedBrothers();
             var mockedRepositoryBrother = new Mock<IBrothers>();
             mockedRepositoryBrother
                 .Setup(repo => repo.GetBrother(2))
