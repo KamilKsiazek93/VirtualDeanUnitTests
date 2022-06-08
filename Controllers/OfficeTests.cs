@@ -50,7 +50,7 @@ namespace VirtualDeanUnitTests.Controllers
             mockedRepositoryBrother
                 .Setup(repo => repo.GetBrother(2))
                 .Returns(() => Task.FromResult(mockedBrothers.ElementAt(1)));
-            var officeController = new VirtualDean.Controllers.Offices(mockedRepositoryBrother.Object, null, null, null, null);
+            var officeController = new Offices(mockedRepositoryBrother.Object, null, null, null, null);
             var result = await officeController.GetBrothers(2);
             Assert.Multiple(() =>
             {
@@ -90,7 +90,7 @@ namespace VirtualDeanUnitTests.Controllers
             var mockedTrayRepository = new Mock<ITrayCommunionHour>();
             mockedTrayRepository
                 .Setup(repo => repo.GetTrayHours(1))
-                .Returns(() => Task.FromResult(mockedTrays));
+                .Returns(() => Task.FromResult(mockedTrays.Where(item => item.WeekOfOffices == 1)));
 
             var officeController = new Offices(null, null, mockedTrayRepository.Object, null, null);
             var result = await officeController.GetTrayHour(1);
@@ -111,8 +111,52 @@ namespace VirtualDeanUnitTests.Controllers
 
             var officeController = new Offices(null, null, mockedTrayRepository.Object, null, null);
             var result = await officeController.AddTrayOffice(mockedTrays);
-            var expectedResult = result as OkObjectResult;
-            Assert.That(result, Is.EqualTo(expectedResult));
+            Assert.IsInstanceOf<OkObjectResult>(result);
+        }
+
+        [Test]
+        public async Task GetCommunion_WhenCall_ShouldReturnCommunionList()
+        {
+            var mockedCommunion = new MockedCommunion().GetCommunions();
+            var mockedCommunionRepository = new Mock<ITrayCommunionHour>();
+            mockedCommunionRepository
+                .Setup(repo => repo.GetCommunionHours())
+                .Returns(() => Task.FromResult(mockedCommunion));
+
+            var officeController = new Offices(null, null, mockedCommunionRepository.Object, null, null);
+            var result = await officeController.GetCommunionHour();
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.ElementAt(0).CommunionHour, Is.EqualTo("9.00"));
+                Assert.That(result.ElementAt(1).CommunionHour, Is.EqualTo("12.00"));
+                Assert.That(result.ElementAt(2).CommunionHour, Is.EqualTo("13.30"));
+            });
+        }
+
+        [Test]
+        public async Task GetCommunion_WhenProvideWeekNumber_ShouldReturnListOfTray()
+        {
+            var mockedCommunion = new MockedCommunion().GetCommunions();
+            var mockedCommunionRepository = new Mock<ITrayCommunionHour>();
+            mockedCommunionRepository
+                .Setup(repo => repo.GetCommunionHours(1))
+                .Returns(() => Task.FromResult(mockedCommunion.Where(i => i.WeekOfOffices == 1)));
+            var officeController = new Offices(null, null, mockedCommunionRepository.Object, null, null);
+            var result = await officeController.GetCommunionHour(1);
+            Assert.That(result.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public async Task AddCommunion_WhenCall_ShouldReturnRightActionResult()
+        {
+            var mockedCommunion = new MockedCommunion().GetCommunions();
+            var mockedCommunionRepository = new Mock<ITrayCommunionHour>();
+            mockedCommunionRepository
+                .Setup(repo => repo.AddCommunionHour(mockedCommunion))
+                .Returns(Task.CompletedTask);
+            var officeController = new Offices(null, null, mockedCommunionRepository.Object, null, null);
+            var result = await officeController.AddCommunionOffice(mockedCommunion);
+            Assert.IsInstanceOf<OkObjectResult>(result);
         }
     }
 }
