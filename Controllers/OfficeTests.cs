@@ -140,7 +140,7 @@ namespace VirtualDeanUnitTests.Controllers
             var mockedCommunion = new MockedCommunion().GetCommunions();
             var mockedCommunionRepository = new Mock<ITrayCommunionHour>();
             mockedCommunionRepository
-                .Setup(repo => repo.GetCommunionHours(2))
+                .Setup(repo => repo.GetCommunionHours(1))
                 .Returns(() => Task.FromResult(mockedCommunion.AsEnumerable()));
             var officeController = new Offices(null, null, mockedCommunionRepository.Object, null, null);
             var result = await officeController.GetCommunionHour(1);
