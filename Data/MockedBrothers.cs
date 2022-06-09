@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualDean.Models;
+using VirtualDean.Enties;
 
 namespace VirtualDeanUnitTests.Data
 {
     class MockedBrothers
     {
-        public IEnumerable<VirtualDean.Models.Brother> getMockedBrothers()
+        public IEnumerable<Brother> GetMockedBrothers()
         {
             var mockBrothers = new List<VirtualDean.Models.Brother>();
             for (int i = 1; i <= 3; i++)
@@ -19,11 +20,12 @@ namespace VirtualDeanUnitTests.Data
                     Id = i,
                     Name = "Bro",
                     Surname = "OP",
-                    precedency = DateTime.Today,
-                    isSinging = false,
-                    isLector = true,
-                    isAcolit = true,
-                    isDiacon = false
+                    Precedency = DateTime.Today,
+                    IsSinging = false,
+                    IsLector = true,
+                    IsAcolit = true,
+                    IsDiacon = false,
+                    StatusBrother = BrotherStatus.BRAT
                 }); ;
             }
             return mockBrothers;
